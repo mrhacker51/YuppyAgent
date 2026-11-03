@@ -1,0 +1,1 @@
+{"default":{"identifier":"default","description":"Main window: core APIs only. No shell, no filesystem, no http plugins - the webview talks to the backend exclusively through the authenticated local WebSocket bridge.","local":true,"windows":["main"],"permissions":["core:default"]}}

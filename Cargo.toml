@@ -1,0 +1,65 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/yuppycode-protocol",
+    "crates/yuppycode-core",
+    "crates/yuppycode-providers",
+    "crates/yuppycode-tools",
+    "crates/yuppycode-mcp",
+    "crates/yuppycode-memory",
+    "crates/yuppycode-cli",
+    "crates/yuppycode-terminal",
+    "crates/yuppycode-agents",
+    "crates/yuppycode-hud",
+    "crates/yuppycode-orchestrator",
+    "crates/yuppycode-bus",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+authors = ["YuppyCode contributors"]
+repository = "https://example.invalid/yuppycode"
+
+[workspace.dependencies]
+# internal crates (path)
+yuppycode-protocol = { path = "crates/yuppycode-protocol" }
+yuppycode-core = { path = "crates/yuppycode-core" }
+yuppycode-providers = { path = "crates/yuppycode-providers" }
+yuppycode-tools = { path = "crates/yuppycode-tools" }
+yuppycode-mcp = { path = "crates/yuppycode-mcp" }
+yuppycode-memory = { path = "crates/yuppycode-memory" }
+yuppycode-terminal = { path = "crates/yuppycode-terminal" }
+yuppycode-agents = { path = "crates/yuppycode-agents" }
+yuppycode-hud = { path = "crates/yuppycode-hud" }
+yuppycode-orchestrator = { path = "crates/yuppycode-orchestrator" }
+yuppycode-bus = { path = "crates/yuppycode-bus" }
+
+# third-party
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tokio = { version = "1", default-features = false, features = ["rt", "sync", "time", "macros", "process", "io-util", "fs"] }
+rusqlite = { version = "0.37", features = ["bundled"] }
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json", "stream"] }
+futures-util = "0.3"
+futures-core = "0.3"
+clap = { version = "4", features = ["derive"] }
+dirs = "6"
+libc = "0.2"
+portable-pty = "0.9"
+# The terminal crate isolates vt100 behind its own snapshot types, so a
+# bump touches only crates/yuppycode-terminal/src/screen.rs.
+vt100 = "0.15"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+panic = "abort"
+
+# Benchmarks must run with debug symbols off but keep a fast profile
+[profile.bench]
+lto = "thin"

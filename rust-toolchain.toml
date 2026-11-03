@@ -1,0 +1,5 @@
+# Pin YuppyCode builds to the current stable channel.
+# Reproducible dependency sets live in Cargo.lock (committed).
+[toolchain]
+channel = "stable"
+components = ["rustfmt", "clippy"]

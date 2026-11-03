@@ -1,0 +1,17 @@
+# Build artifacts and dependencies — never part of task history.
+node_modules/
+.next/
+out/
+dist/
+.tmp-tests/
+target/
+*.tsbuildinfo
+
+# Local environment noise.
+.env
+.env.*
+.DS_Store
+*.log
+
+# Compiled sidecar binaries (built by scripts/build_bundles.sh, not source).
+desktop/src-tauri/binaries/

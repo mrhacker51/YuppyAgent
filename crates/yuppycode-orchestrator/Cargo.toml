@@ -1,0 +1,15 @@
+[package]
+name = "yuppycode-orchestrator"
+description = "Jarvis-style task scheduler: bounded concurrency, cancellation, git worktree isolation and integration reports"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+yuppycode-agents = { workspace = true }
+tokio = { workspace = true, features = ["process", "rt", "rt-multi-thread", "macros", "time", "sync"] }
+thiserror = { workspace = true }
+serde = { workspace = true }

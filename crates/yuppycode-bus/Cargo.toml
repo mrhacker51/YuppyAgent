@@ -1,0 +1,20 @@
+[package]
+name = "yuppycode-bus"
+description = "Team message bus: SQLite inboxes shared by real agent CLIs, plus the stdio MCP server that lets Claude Code and Codex talk to each other."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+dirs = { workspace = true }
+rusqlite = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+yuppycode-mcp = { workspace = true }
+
+[dev-dependencies]
+# The contract tests need a second, non-bus connection to hold the SQLite write
+# lock and prove that a real competing writer makes the bus wait.
+rusqlite = { workspace = true }

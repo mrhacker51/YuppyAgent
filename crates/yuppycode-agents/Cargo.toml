@@ -1,0 +1,15 @@
+[package]
+name = "yuppycode-agents"
+description = "Adapters for real coding-agent CLIs: detection, versioning and PTY session launch (Claude Code)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+yuppycode-bus = { workspace = true }
+serde_json = { workspace = true }
+yuppycode-terminal = { workspace = true }
+thiserror = { workspace = true }

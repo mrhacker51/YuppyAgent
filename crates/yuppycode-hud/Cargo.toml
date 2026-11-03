@@ -1,0 +1,16 @@
+[package]
+name = "yuppycode-hud"
+description = "Framework-independent department registry and HUD layout model with validated JSON persistence"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+yuppycode-protocol = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+dirs = { workspace = true }

@@ -1,0 +1,11 @@
+[package]
+name = "yuppycode-protocol"
+description = "Versioned, transport-neutral request/response/event types for YuppyCode (future IPC/WebSocket bridge)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }

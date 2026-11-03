@@ -1,0 +1,49 @@
+{
+  "name": "ui",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3434",
+    "build": "next build",
+    "build:export": "NEXT_EXPORT=1 next build",
+    "start": "next start -p 3434",
+    "lint": "eslint",
+    "test": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --import ./tests/register.mjs --test-force-exit --test tests/*.test.ts",
+    "postinstall": "node scripts/patch-fancy-ui.mjs"
+  },
+  "dependencies": {
+    "@chenglou/pretext": "^0.0.5",
+    "@mediapipe/tasks-vision": "^0.10.17",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
+    "@react-three/postprocessing": "^3.2.2",
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/xterm": "^6.0.0",
+    "@xyflow/react": "^12.12.1",
+    "canvas-confetti": "^1.9.4",
+    "clsx": "^2.1.1",
+    "fancy-ui-react": "0.7.0",
+    "framer-motion": "^14.9.0",
+    "gsap": "^3.15.0",
+    "lucide-react": "^1.66.0",
+    "next": "16.4.3",
+    "pixi.js": "^8.22.0",
+    "postprocessing": "^6.39.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tailwind-merge": "^3.4.0",
+    "three": "^0.186.0",
+    "zustand": "^5.0.16"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "^0.186.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.3",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

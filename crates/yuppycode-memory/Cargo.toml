@@ -1,0 +1,14 @@
+[package]
+name = "yuppycode-memory"
+description = "SQLite-backed workspace memory: migrations, history, preferences, audit events, context pruning."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+yuppycode-core = { workspace = true }
+rusqlite = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }

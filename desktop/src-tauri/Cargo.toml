@@ -1,0 +1,30 @@
+[package]
+name = "yuppycode-desktop"
+version = "0.1.0"
+description = "YuppyCode / Jarvis — native Linux desktop shell"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+
+# Deliberately standalone (own lockfile/target): the main workspace must not
+# gain webkit/gtk system dependencies just because the desktop shell exists.
+# The empty [workspace] table keeps cargo from adopting this crate into the
+# parent workspace. See docs/DESKTOP_APP_PLAN.md §3.6.
+[workspace]
+# See docs/DESKTOP_APP_PLAN.md §3.6.
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rand = "0.9"
+
+[profile.release]
+strip = true
+# LTO + codegen-units=1 is the memory hog that OOM-kills the 4 GiB CI box;
+# the desktop shell is a thin Tauri wrapper, so opt-level 3 is enough.
+lto = false
+codegen-units = 4

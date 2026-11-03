@@ -1,0 +1,31 @@
+[package]
+name = "yuppycode-cli"
+description = "The `yuppy` backend binary: the WebSocket bridge behind the Desktop app and web UI, plus the MCP plumbing it launches."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "yuppy"
+path = "src/main.rs"
+
+[dependencies]
+yuppycode-bus = { workspace = true }
+yuppycode-protocol = { workspace = true }
+yuppycode-mcp = { workspace = true }
+yuppycode-agents = { workspace = true }
+yuppycode-hud = { workspace = true }
+yuppycode-orchestrator = { workspace = true }
+yuppycode-terminal = { workspace = true }
+clap = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["rt", "rt-multi-thread", "macros", "signal"] }
+tokio-tungstenite = "0.26"
+rand = "0.8"
+futures-util = "0.3"
+
+[dev-dependencies]
+tempfile = "3"

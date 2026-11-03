@@ -1,0 +1,1438 @@
+@import "tailwindcss";
+@import "fancy-ui-react/tailwind.css";
+
+/* ── YuppyCode design tokens — AgentSpace ───────────────────────────────
+   Near-black charcoal surfaces, hairline separators and one restrained
+   orange accent for active/primary states. Green/yellow/red are reserved
+   for live, warning and error semantics. These custom properties are a
+   contract with the panel components; do not rename them. */
+:root {
+  /* ── YuppyCode · Command Deck ──────────────────────────────────────────
+     Deep arctic ink surfaces, one signal-teal accent, a cool structural
+     indigo for hierarchy, and semantic amber/coral. Contrast is tuned for
+     long sessions: no pure black, no pure white, no glow soup. */
+  --bg-0: #070b10;
+  --bg-1: #0b1118;
+  --bg-2: #111a24;
+  --bg-3: #17222e;
+  --panel: rgba(11, 17, 24, 0.92);
+  --panel-solid: #0b1118;
+
+  /* Aurora Deck surface ladder. Three levels only: the app wash, the glass
+     panel body and the lighter rail that caps it. */
+  --surface-1: rgba(11, 17, 24, 0.72);
+  --surface-2: rgba(17, 26, 36, 0.88);
+  --surface-3: rgba(23, 34, 46, 0.92);
+  --elev-1: 0 12px 32px -18px rgba(0, 0, 0, 0.8);
+  --radius-panel: 10px;
+  --radius-control: 6px;
+
+  --line: rgba(148, 178, 209, 0.10);
+  --line-mid: rgba(148, 178, 209, 0.18);
+  --line-strong: rgba(94, 234, 212, 0.36);
+
+  --accent: #5eead4;
+  --accent-hi: #99f6e4;
+  --accent-dim: rgba(94, 234, 212, 0.10);
+  --accent-ink: #04231f;
+
+  --struct: #8b9cf7;
+  --struct-dim: rgba(139, 156, 247, 0.10);
+
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --danger: #fb7185;
+
+  --text-hi: #e9eef5;
+  --text-mid: #a7b6c7;
+  --text-lo: #6b7c8f;
+
+  /* office / isometric scene tokens */
+  --office-floor-a: #16212c;
+  --office-floor-b: #121b25;
+  --office-wall: #1b2836;
+  --office-wall-lit: #24364a;
+  --office-desk: #2b3a4a;
+  --office-desk-top: #3a4d61;
+
+  /* aliases kept for existing utilities */
+  --background: var(--bg-0);
+  --foreground: var(--text-hi);
+
+  /* ── FancyUI token bridge ───────────────────────────────────────────────
+     fancy-ui-react resolves its own semantic names (card, popover, primary,
+     muted, border, ring…) through Tailwind utilities. They are mapped onto
+     this deck's palette so every vendored component inherits the same
+     surfaces, hairlines and signal accent instead of the library's neutral
+     defaults. Unlayered on purpose: the package's defaults live in
+     `@layer base`, so these always win. */
+  color-scheme: dark;
+  --card: var(--bg-1);
+  --card-foreground: var(--text-hi);
+  --popover: var(--bg-2);
+  --popover-foreground: var(--text-hi);
+  --primary: var(--accent);
+  --primary-foreground: var(--accent-ink);
+  --secondary: var(--bg-2);
+  --secondary-foreground: var(--text-mid);
+  --muted: var(--bg-2);
+  --muted-foreground: var(--text-lo);
+  --accent-foreground: var(--accent-ink);
+  --destructive: var(--danger);
+  --border: var(--line);
+  --input: var(--line-mid);
+  --ring: var(--accent);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-bg-0: var(--bg-0);
+  --color-bg-1: var(--bg-1);
+  --color-bg-2: var(--bg-2);
+  --color-bg-3: var(--bg-3);
+  --color-panel: var(--panel);
+  --color-panel-solid: var(--panel-solid);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--line);
+  --color-line-mid: var(--line-mid);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-hi: var(--accent-hi);
+  --color-accent-dim: var(--accent-dim);
+  --color-struct: var(--struct);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+  --color-text-hi: var(--text-hi);
+  --color-text-mid: var(--text-mid);
+  --color-text-lo: var(--text-lo);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-jetbrains);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(70rem 40rem at 12% -10%, rgba(94, 234, 212, 0.055), transparent 60%),
+    radial-gradient(60rem 36rem at 92% 0%, rgba(139, 156, 247, 0.06), transparent 62%),
+    var(--bg-0);
+  color: var(--text-hi);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+  overscroll-behavior: none;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(94, 234, 212, 0.24);
+  color: var(--text-hi);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 178, 209, 0.22) transparent;
+}
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(148, 178, 209, 0.20);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(94, 234, 212, 0.42);
+  background-clip: content-box;
+}
+
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 178, 209, 0.22) transparent;
+}
+
+/* Quiet heartbeat for a connected/live status dot. */
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.34);
+  }
+  50% {
+    opacity: 0.72;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0);
+  }
+}
+
+.status-pulse {
+  animation: status-pulse 2.4s ease-in-out infinite;
+}
+
+/* ── Surface kit ───────────────────────────────────────────────────────
+   One vocabulary for panels, rails, buttons, inputs and type. Class names
+   are kept from the previous skin so every component inherits the new
+   design without a rewrite. */
+@font-face {
+  font-family: "VT323";
+  src: url("/fonts/vt323.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face { font-family: "Inter"; src: url("/fonts/inter-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("/fonts/inter-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("/fonts/inter-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("/fonts/inter-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jbmono-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jbmono-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/jbmono-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+
+:root {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-jetbrains: "JetBrains Mono", ui-monospace, monospace;
+  /* legacy aliases still referenced by a few components */
+  --font-geist-sans: var(--font-sans);
+  --font-geist-mono: var(--font-jetbrains);
+}
+
+/* Type roles */
+.pixel-title {
+  font-family: var(--font-sans), ui-sans-serif, sans-serif;
+  font-weight: 680;
+  font-size: 12px;
+  letter-spacing: -0.01em;
+  color: var(--text-hi);
+}
+.pixel-body {
+  font-family: var(--font-sans), ui-sans-serif, sans-serif;
+  font-size: 12px;
+  letter-spacing: -0.005em;
+  color: var(--text-mid);
+}
+.pixel-label {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-lo);
+}
+
+/* Panels: hairline border, faint top sheen, soft depth. */
+.pixel-panel,
+.deck-panel {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.022), transparent 42%),
+    var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.03) inset,
+    0 8px 24px -14px rgba(0, 0, 0, 0.9);
+}
+
+/* ── Aurora Deck surfaces ────────────────────────────────────────────────
+   The panel contract: translucent ink glass, one top-lit edge, no shadow
+   heavier than --elev-1. Border and blur are applied by DeckPanel so a panel
+   still shows exactly one hairline frame. */
+.deck-surface {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 42%),
+    var(--surface-1);
+  border-radius: var(--radius-panel);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    var(--elev-1);
+  backdrop-filter: blur(2px);
+}
+
+/* Live panels: work is genuinely running. Accent lives in the border (set by
+   DeckPanel) and one quiet inner wash; the beam is a separate element. */
+.deck-surface-live {
+  background:
+    linear-gradient(180deg, rgba(94, 234, 212, 0.035), transparent 46%),
+    var(--surface-1);
+  box-shadow:
+    inset 0 1px 0 rgba(153, 246, 228, 0.07),
+    0 0 0 1px rgba(94, 234, 212, 0.045),
+    var(--elev-1);
+}
+
+/* 1px gradient beam across the top edge of a live panel. */
+.deck-live-beam {
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    rgba(94, 234, 212, 0.75) 42%,
+    rgba(153, 246, 228, 0.95) 50%,
+    rgba(94, 234, 212, 0.75) 58%,
+    transparent
+  );
+  background-size: 55% 100%;
+  background-repeat: no-repeat;
+  animation: deck-live-beam 2.8s ease-in-out infinite;
+}
+
+@keyframes deck-live-beam {
+  0% {
+    background-position: -55% 0;
+    opacity: 0.55;
+  }
+  18%,
+  82% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 155% 0;
+    opacity: 0.55;
+  }
+}
+
+/* Fine 1px lattice at ~4% alpha, faded out towards the window edges. */
+.deck-lattice {
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      rgba(148, 178, 209, 0.04) 0 1px,
+      transparent 1px 32px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(148, 178, 209, 0.04) 0 1px,
+      transparent 1px 32px
+    );
+  -webkit-mask-image: radial-gradient(ellipse at 50% 28%, #000 30%, transparent 88%);
+  mask-image: radial-gradient(ellipse at 50% 28%, #000 30%, transparent 88%);
+}
+
+/* One-shot deck entrance: 180ms fade + 4px rise. */
+.deck-shell-enter {
+  animation: deck-shell-enter 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes deck-shell-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.pixel-panel-2 {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+}
+.pixel-panel-inset {
+  background: #060a0e;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* Panel header rail: a compact label bar with a hairline under it. */
+.deck-rail {
+  position: relative;
+  background:
+    /* pixelfx-style dither: a 3px checker that only catches the light */
+    conic-gradient(
+      from 90deg at 1.5px 1.5px,
+      transparent 25%,
+      rgba(94, 234, 212, 0.045) 0 50%,
+      transparent 0 75%,
+      rgba(139, 156, 247, 0.03) 0
+    )
+    0 0 / 3px 3px,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.028), transparent),
+    var(--surface-2);
+  backdrop-filter: blur(6px);
+}
+.deck-rail::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(94, 234, 212, 0.42),
+    rgba(139, 156, 247, 0.18) 38%,
+    transparent 78%
+  );
+  pointer-events: none;
+}
+.deck-panel::before {
+  content: none;
+}
+
+/* Buttons */
+.pixel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 9px;
+  border-radius: 5px;
+  border: 1px solid var(--line-mid);
+  background: var(--bg-2);
+  color: var(--text-mid);
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 130ms ease,
+    border-color 130ms ease,
+    color 130ms ease,
+    transform 90ms ease;
+}
+.pixel-btn:hover:not(:disabled) {
+  background: var(--bg-3);
+  border-color: var(--line-strong);
+  color: var(--text-hi);
+}
+.pixel-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.pixel-btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+.pixel-btn-primary {
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.035) 0 1px,
+      transparent 1px 3px
+    ),
+    linear-gradient(180deg, rgba(94, 234, 212, 0.20), rgba(94, 234, 212, 0.12));
+  border-color: rgba(94, 234, 212, 0.45);
+  color: var(--accent-hi);
+  box-shadow: 0 0 0 1px rgba(4, 35, 31, 0.5) inset;
+}
+.pixel-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(94, 234, 212, 0.28), rgba(94, 234, 212, 0.18));
+  border-color: var(--accent);
+  color: #d7fff8;
+}
+
+/* Inputs */
+.pixel-input {
+  background: #070d13;
+  border: 1px solid var(--line-mid);
+  border-radius: 5px;
+  color: var(--text-hi);
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.pixel-input:focus,
+.pixel-input:focus-within {
+  border-color: rgba(94, 234, 212, 0.55);
+  box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.10);
+}
+
+/* Scroll surfaces */
+.pixel-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 178, 209, 0.24) transparent;
+}
+.pixel-scroll::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+.pixel-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.pixel-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 178, 209, 0.22);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.pixel-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(94, 234, 212, 0.45);
+  background-clip: content-box;
+}
+
+/* Canvas upscaling for the isometric scene */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.pixel-avatar {
+  border-radius: 3px;
+  image-rendering: pixelated;
+}
+
+/* ── Motion, terminal chrome, map surfaces ─────────────────────────── */
+.xterm .xterm-viewport {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(168, 162, 158, 0.24) transparent;
+}
+
+.xterm .xterm-viewport::-webkit-scrollbar {
+  width: 5px;
+}
+
+.xterm .xterm-viewport::-webkit-scrollbar-thumb {
+  background: rgba(168, 162, 158, 0.24);
+}
+
+/* ── AI network / holographic HUD layer ─────────────────────────────────
+   Presentation only. Everything here is disabled by the effects store or
+   by `prefers-reduced-motion`; the canvas map remains interactive without
+   any of these classes. */
+
+/* Corner brackets around the live map (holographic frame). */
+.holo-corners {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(var(--accent), var(--accent)) left top / 12px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) left top / 1px 12px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) right top / 12px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) right top / 1px 12px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) left bottom / 12px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) left bottom / 1px 12px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) right bottom / 12px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) right bottom / 1px 12px no-repeat;
+  opacity: 0.35;
+  transition: opacity 200ms ease;
+}
+
+.group:hover.holo-corners,
+.group:hover > .holo-corners {
+  opacity: 0.6;
+}
+
+/* Fine scanlines: ~4% opacity, never over terminal text. */
+.fx-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(231, 229, 228, 0.05) 0px,
+    rgba(231, 229, 228, 0.05) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.55;
+  animation: fx-scanline-drift 7s linear infinite;
+}
+
+@keyframes fx-scanline-drift {
+  from {
+    background-position-y: 0;
+  }
+  to {
+    background-position-y: 4px;
+  }
+}
+
+/* Scanning beam travelling down the map, very low contrast. */
+.fx-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 46px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(94, 234, 212, 0.05) 45%,
+    rgba(94, 234, 212, 0.10) 50%,
+    rgba(94, 234, 212, 0.05) 55%,
+    transparent
+  );
+  animation: fx-beam-move 11s linear infinite;
+}
+
+@keyframes fx-beam-move {
+  0% {
+    transform: translateY(-60px);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* Controlled glitch: brief, never constant; triggered by real errors. */
+.fx-glitch {
+  animation: fx-glitch 420ms steps(2, end) 1;
+}
+
+@keyframes fx-glitch {
+  0%,
+  100% {
+    filter: none;
+    transform: none;
+  }
+  15% {
+    filter: hue-rotate(7deg) saturate(1.35) contrast(1.04);
+    transform: translateX(1px);
+  }
+  35% {
+    transform: translateX(-1px);
+    filter: contrast(1.08);
+  }
+  55% {
+    filter: none;
+    transform: translateX(0.5px);
+  }
+  75% {
+    filter: brightness(1.05);
+    transform: none;
+  }
+}
+
+/* Light sweep on the focused/active terminal panel only. */
+.panel-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.panel-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(94, 234, 212, 0.07) 50%,
+    transparent 62%
+  );
+  background-size: 240% 100%;
+  animation: panel-sweep 5s ease-in-out infinite;
+}
+
+@keyframes panel-sweep {
+  0%,
+  58% {
+    background-position: 130% 0;
+  }
+  100% {
+    background-position: -50% 0;
+  }
+}
+
+/* ── 3D universe stage ─────────────────────────────────────────────────── */
+
+/* Real completion flash: one short green bloom, never a fake progress bar. */
+.universe-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 35%,
+    rgba(34, 197, 94, 0.20),
+    rgba(34, 197, 94, 0.05) 38%,
+    transparent 68%
+  );
+  mix-blend-mode: screen;
+  animation: universe-flash 760ms ease-out 1 forwards;
+}
+
+@keyframes universe-flash {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  18% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+}
+
+/* ── React Flow 2D map ─────────────────────────────────────────────────── */
+
+.rf-yuppy {
+  --xy-background-color: transparent;
+  --xy-edge-stroke: rgba(161, 161, 170, 0.35);
+  --xy-edge-stroke-selected: var(--accent);
+  --xy-node-border-radius: 4px;
+  --xy-attribution-background-color: rgba(7, 8, 10, 0.7);
+  --xy-attribution-color: rgba(120, 113, 108, 0.8);
+}
+
+.rf-yuppy .react-flow__attribution {
+  font-family: ui-monospace, monospace;
+  font-size: 7px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.rf-node {
+  position: relative;
+  display: flex;
+  min-width: 128px;
+  max-width: 190px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px 7px 8px;
+  border: 1px solid color-mix(in srgb, var(--rf-node-color) 34%, transparent);
+  background: linear-gradient(180deg, rgba(13, 15, 18, 0.94), rgba(8, 9, 11, 0.94));
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.5),
+    0 0 18px color-mix(in srgb, var(--rf-node-color) 12%, transparent);
+  font-family: ui-monospace, monospace;
+  color: #e7e5e4;
+  cursor: grab;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+  animation: rf-node-spawn 420ms cubic-bezier(0.2, 0.9, 0.2, 1) 1;
+}
+
+.rf-node:active {
+  cursor: grabbing;
+}
+
+.rf-node:hover,
+.rf-node.is-selected {
+  border-color: color-mix(in srgb, var(--rf-node-color) 70%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--rf-node-color) 25%, transparent),
+    0 0 26px color-mix(in srgb, var(--rf-node-color) 26%, transparent);
+  transform: translateY(-1px);
+}
+
+.rf-node.is-failed {
+  border-color: rgba(239, 68, 68, 0.55);
+  animation: rf-node-spawn 420ms ease 1, rf-failed-pulse 1.5s ease-in-out infinite;
+}
+
+.rf-node-halo {
+  position: absolute;
+  inset: -18px;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--rf-node-color) 20%, transparent),
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+.rf-node-ring {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -3px;
+  border: 1px dashed color-mix(in srgb, var(--rf-node-color) 45%, transparent);
+  border-radius: 999px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.rf-node.is-active .rf-node-ring {
+  animation: rf-ring-spin 5.5s linear infinite;
+  opacity: 1;
+}
+
+.rf-node-core {
+  position: relative;
+  z-index: 1;
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--rf-node-color);
+  box-shadow: 0 0 10px var(--rf-node-color);
+}
+
+.rf-node.is-active .rf-node-core,
+.rf-pod.is-active .rf-node-core,
+.rf-plaza.is-active .rf-node-core {
+  animation: rf-core-pulse 1.5s ease-in-out infinite;
+}
+
+.rf-node-copy {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.rf-node-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.rf-node-sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 7.5px;
+  color: rgba(168, 162, 158, 0.9);
+}
+
+.rf-node-status {
+  color: var(--rf-node-color);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.rf-node-sep {
+  margin: 0 3px;
+  color: rgba(120, 113, 108, 0.6);
+}
+
+/* Office-city nodes: towers, plaza, pods. Same district as the 3D stage. */
+.rf-tower {
+  position: relative;
+  display: flex;
+  min-width: 148px;
+  max-width: 200px;
+  align-items: stretch;
+  gap: 8px;
+  padding: 9px 9px 9px 22px;
+  border: 1px solid color-mix(in srgb, var(--rf-node-color) 40%, transparent);
+  background: linear-gradient(180deg, #101318, #08090c 82%);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.55),
+    0 6px 14px rgba(0, 0, 0, 0.55),
+    0 0 20px color-mix(in srgb, var(--rf-node-color) 12%, transparent);
+  font-family: ui-monospace, monospace;
+  color: #e7e5e4;
+  cursor: grab;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+  animation: rf-node-spawn 420ms cubic-bezier(0.2, 0.9, 0.2, 1) 1;
+}
+
+.rf-tower:active {
+  cursor: grabbing;
+}
+
+.rf-tower:hover,
+.rf-tower.is-selected {
+  border-color: color-mix(in srgb, var(--rf-node-color) 75%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--rf-node-color) 28%, transparent),
+    0 8px 18px rgba(0, 0, 0, 0.6),
+    0 0 28px color-mix(in srgb, var(--rf-node-color) 28%, transparent);
+  transform: translateY(-1px);
+}
+
+.rf-tower.is-failed {
+  border-color: rgba(239, 68, 68, 0.55);
+  animation: rf-node-spawn 420ms ease 1, rf-failed-pulse 1.5s ease-in-out infinite;
+}
+
+/* Window-strip facade: the tower's lit windows are the department colour. */
+.rf-tower-facade {
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  left: 7px;
+  width: 9px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--rf-node-color) 65%, transparent) 0 4px,
+      #0b0d11 4px 7px
+    ),
+    #0b0d11;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.6);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.rf-tower.is-active .rf-tower-facade {
+  opacity: 1;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--rf-node-color) 55%, transparent));
+}
+
+/* Roof cap with a status beacon line. */
+.rf-tower-roof {
+  position: absolute;
+  top: -4px;
+  left: 12%;
+  right: 12%;
+  height: 3px;
+  background: color-mix(in srgb, var(--rf-node-color) 80%, #101318);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--rf-node-color) 60%, transparent);
+  pointer-events: none;
+}
+
+.rf-tower-kicker {
+  display: block;
+  font-size: 7px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rf-node-color);
+  opacity: 0.85;
+}
+
+.rf-plaza {
+  position: relative;
+  display: flex;
+  min-width: 118px;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 9px;
+  border: 1px dashed color-mix(in srgb, var(--rf-node-color) 45%, transparent);
+  border-radius: 999px;
+  background: radial-gradient(
+    circle at 22% 50%,
+    color-mix(in srgb, var(--rf-node-color) 14%, #0b0d11),
+    #08090c 70%
+  );
+  box-shadow: 0 0 22px color-mix(in srgb, var(--rf-node-color) 16%, transparent);
+  font-family: ui-monospace, monospace;
+  color: #f5f5f4;
+  cursor: grab;
+  animation: rf-node-spawn 420ms cubic-bezier(0.2, 0.9, 0.2, 1) 1;
+}
+
+.rf-pod {
+  position: relative;
+  display: flex;
+  min-width: 120px;
+  max-width: 180px;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 9px 5px 8px;
+  border: 1px solid color-mix(in srgb, var(--rf-node-color) 38%, transparent);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(13, 15, 18, 0.95), rgba(8, 9, 11, 0.95));
+  box-shadow: 0 0 14px color-mix(in srgb, var(--rf-node-color) 14%, transparent);
+  font-family: ui-monospace, monospace;
+  color: #e7e5e4;
+  cursor: grab;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+  animation: rf-node-spawn 420ms cubic-bezier(0.2, 0.9, 0.2, 1) 1;
+}
+
+.rf-pod:hover,
+.rf-pod.is-selected {
+  border-color: color-mix(in srgb, var(--rf-node-color) 75%, transparent);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--rf-node-color) 30%, transparent);
+}
+
+.rf-pod.is-failed {
+  border-color: rgba(239, 68, 68, 0.55);
+  animation: rf-node-spawn 420ms ease 1, rf-failed-pulse 1.5s ease-in-out infinite;
+}
+
+.rf-pod .rf-node-core {
+  position: relative;
+  left: auto;
+  top: auto;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.rf-pod .rf-node-copy {
+  margin-left: 0;
+}
+
+.rf-handle {
+  width: 5px !important;
+  height: 5px !important;
+  border: 0 !important;
+  background: color-mix(in srgb, var(--rf-node-color) 65%, transparent) !important;
+  opacity: 0.5;
+}
+
+.rf-edge-flow {
+  stroke-dasharray: 3 16;
+  animation: rf-edge-dash 1.05s linear infinite;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 4px currentColor);
+  pointer-events: none;
+}
+
+@keyframes rf-edge-dash {
+  to {
+    stroke-dashoffset: -38;
+  }
+}
+
+@keyframes rf-node-spawn {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rf-ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rf-core-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px var(--rf-node-color);
+  }
+  50% {
+    box-shadow: 0 0 16px var(--rf-node-color);
+  }
+}
+
+@keyframes rf-failed-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(239, 68, 68, 0.45);
+  }
+}
+
+/* React Flow chrome, matched to the HUD. */
+.rf-controls {
+  border: 1px solid var(--border) !important;
+  background: rgba(7, 8, 10, 0.88) !important;
+  box-shadow: none !important;
+}
+
+.rf-controls button {
+  border-bottom: 1px solid var(--border) !important;
+  background: transparent !important;
+  color: var(--text-mid) !important;
+  fill: var(--text-mid) !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.rf-controls button:hover {
+  background: rgba(94, 234, 212, 0.08) !important;
+  color: var(--accent) !important;
+  fill: var(--accent) !important;
+}
+
+.rf-minimap {
+  border: 1px solid var(--border) !important;
+  background: rgba(7, 8, 10, 0.8) !important;
+  width: 96px !important;
+  height: 62px !important;
+}
+
+/* One-shot ping when a real PTY screen generation arrives. */
+.term-activity {
+  animation: term-activity 850ms ease-out 1;
+}
+
+@keyframes term-activity {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 5px rgba(34, 197, 94, 0);
+    opacity: 0.7;
+  }
+}
+
+/* ── Command-deck design layer (every module shares this) ───────────────
+   One language across web + desktop: layered dark surfaces with a top
+   light-line, a faint engineering grid, hairline section rules and status
+   colour reserved for real telemetry. Decorative only — never a data source. */
+
+
+
+/* Header rail sweep (kept for modules that still reference it). */
+@keyframes deck-rail {
+  0% {
+    background-position: -50% 0;
+  }
+  100% {
+    background-position: 150% 0;
+  }
+}
+
+/* Live status glow used by headers/dots: colour-coded, real state only. */
+.deck-live {
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.55);
+}
+
+/* List rows: a left accent bar that lights on hover/selection. */
+.deck-row {
+  position: relative;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease;
+}
+
+.deck-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6%;
+  bottom: 6%;
+  width: 1px;
+  background: var(--accent);
+  opacity: 0;
+  transform: scaleY(0.4);
+  transform-origin: center;
+  transition:
+    opacity 160ms ease,
+    transform 200ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.deck-row:hover::before,
+.deck-row[data-active="true"]::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.deck-row:hover {
+  background: rgba(94, 234, 212, 0.035);
+}
+
+/* Staggered row entry: the delay is set inline from the row index. */
+.deck-enter {
+  animation: deck-enter 340ms cubic-bezier(0.2, 0.85, 0.25, 1) both;
+}
+
+@keyframes deck-enter {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Stat cells pick up their tone as a soft halo. */
+.deck-stat {
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.deck-stat:hover {
+  border-color: rgba(94, 234, 212, 0.32);
+  box-shadow: 0 0 22px rgba(94, 234, 212, 0.07);
+}
+
+.deck-stat::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  opacity: 0.16;
+}
+
+/* Focus ring used by every interactive control in the deck. */
+.deck-focus:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 1px rgba(94, 234, 212, 0.55),
+    0 0 14px rgba(94, 234, 212, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-pulse,
+  .fx-scanlines,
+  .fx-beam,
+  .fx-glitch,
+  .panel-sweep::after,
+  .term-activity,
+  .universe-flash,
+  .deck-rail::after,
+  .deck-live-beam,
+  .deck-shell-enter,
+  .deck-enter,
+  .rf-node,
+  .rf-node-ring,
+  .rf-node-core,
+  .rf-edge-flow {
+    animation: none;
+  }
+  .fx-beam,
+  .fx-scanlines {
+    display: none;
+  }
+  .rf-node:hover,
+  .rf-node.is-selected {
+    transform: none;
+  }
+  .rf-edge-flow {
+    display: none;
+  }
+  .deck-row::before,
+  .deck-row:hover::before,
+  .deck-row[data-active="true"]::before {
+    transition: none;
+    transform: none;
+  }
+  .deck-live-beam {
+    background-position: 50% 0;
+    opacity: 1;
+  }
+  .deck-shell-enter {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+
+/* ── pixelfx surfaces ────────────────────────────────────────────────
+   The terminal is a CRT: a 3px scanline mask and a faint vignette on top of
+   the canvas. Pointer-events stay off so copying/selection is untouched. */
+.term-surface {
+  position: relative;
+}
+.term-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(210, 235, 255, 0.022) 0 1px,
+      transparent 1px 3px
+    ),
+    radial-gradient(120% 90% at 50% 40%, transparent 62%, rgba(0, 0, 0, 0.16));
+}
+
+/* A 2px pixel notch on primary controls, cut with a clip instead of a radius. */
+.pixel-btn-primary {
+  clip-path: polygon(
+    2px 0,
+    100% 0,
+    100% calc(100% - 2px),
+    calc(100% - 2px) 100%,
+    0 100%,
+    0 2px
+  );
+}
+
+/* Section headings get a dithered underline: two 1px rows offset by one pixel. */
+.pixel-label {
+  position: relative;
+}
+.pixel-label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background:
+    linear-gradient(90deg, rgba(94, 234, 212, 0.42) 0 3px, transparent 3px 4px),
+    linear-gradient(90deg, transparent 0 2px, rgba(139, 156, 247, 0.28) 2px 3px);
+  background-size: 4px 1px, 4px 1px;
+  background-repeat: repeat-x;
+  background-position: 0 0, 1px 1px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ── Fancy surface primitives ──────────────────────────────────────────────
+   Pointer-reactive panels, a shimmering activity label and the status morph.
+   Every one of them is decorative: state still reads from the text next to it,
+   and all motion collapses under `prefers-reduced-motion`. */
+
+.fx-spot {
+  position: relative;
+  isolation: isolate;
+}
+
+.fx-spot-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    var(--fx-size, 280px) circle at var(--fx-mx, 50%) var(--fx-my, 0%),
+    rgb(var(--fx-accent, 94 234 212) / var(--fx-alpha, 0.1)),
+    transparent 68%
+  );
+  transition: opacity 220ms ease;
+}
+
+.fx-spot:hover .fx-spot-layer,
+.fx-spot:focus-within .fx-spot-layer {
+  opacity: 1;
+}
+
+/* A hairline ring that only lights up where the pointer approaches an edge. */
+.fx-glow-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  opacity: calc(var(--fx-prox, 0) * 0.85);
+  background: conic-gradient(
+    from var(--fx-angle, 0deg),
+    transparent 0 46%,
+    rgb(var(--fx-accent, 94 234 212) / 0.9) 62%,
+    transparent 80%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: opacity 160ms linear;
+}
+
+.fx-spot > *:not(.fx-spot-layer):not(.fx-glow-layer) {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fx-shimmer-sweep {
+  0% {
+    background-position: -180% 0;
+  }
+  100% {
+    background-position: 280% 0;
+  }
+}
+
+.fx-shimmer {
+  color: var(--text-mid);
+  background-image: linear-gradient(
+    100deg,
+    transparent 25%,
+    rgba(94, 234, 212, 0.85) 45%,
+    rgba(153, 246, 228, 0.95) 50%,
+    rgba(94, 234, 212, 0.85) 55%,
+    transparent 75%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fx-shimmer-sweep 2.4s linear infinite;
+}
+
+@keyframes fx-status-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fx-status-spin {
+  animation: fx-status-rotate 900ms linear infinite;
+}
+
+@keyframes fx-status-draw {
+  from {
+    stroke-dasharray: 20;
+    stroke-dashoffset: 20;
+  }
+  to {
+    stroke-dasharray: 20;
+    stroke-dashoffset: 0;
+  }
+}
+
+.fx-status-draw {
+  animation: fx-status-draw 300ms ease-out both;
+}
+
+/* A two-axis grip used by the panel edges we added. */
+.fx-grip {
+  position: relative;
+  touch-action: none;
+  user-select: none;
+}
+.fx-grip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(148, 178, 209, 0.35) 0 1px,
+    transparent 1px 3px
+  );
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+.fx-grip:hover::after,
+.fx-grip:focus-visible::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-shimmer {
+    animation: none;
+    -webkit-text-fill-color: currentColor;
+    background-image: none;
+  }
+  .fx-status-spin,
+  .fx-status-draw {
+    animation: none;
+  }
+}

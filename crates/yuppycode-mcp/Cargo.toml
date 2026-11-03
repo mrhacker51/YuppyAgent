@@ -1,0 +1,16 @@
+[package]
+name = "yuppycode-mcp"
+description = "Model Context Protocol client over stdio: lifecycle, tool discovery and typed invocation."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt", "rt-multi-thread", "macros", "process"] }
